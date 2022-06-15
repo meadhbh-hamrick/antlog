@@ -1,0 +1,19 @@
+{
+  "name": "antlog",
+  "version": "1.0.0",
+  "description": "Log JSON objects, mainly for a CloudWatch environment",
+  "main": "antlog.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "keywords": [
+    "logging",
+    "aws",
+    "cloudwatch"
+  ],
+  "author": "Meadhbh S. Hamrick <m@tbd.ltd>",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "jest": "^27.3.1"
+  }
+}
