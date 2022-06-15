@@ -91,7 +91,8 @@ It is then read and parsed with the antlog function:
   [ _log, _msg ] = antlog( larb_messages );
 
   _log( _msg.I_BEGIN, {name: "REST Access"} );
-  _log( _msg.I_OPTIONS, {options: process.ARGV} );```
+  _log( _msg.I_OPTIONS, {options: process.ARGV} );
+```
 
 Which would print log messages that look like:
 
