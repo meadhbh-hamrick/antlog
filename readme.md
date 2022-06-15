@@ -103,13 +103,15 @@ Which would print log messages that look like:
 
 Each log entry will have the following "private" JSON members:
 
-| _f | facility                                             |
-| _s | severity (I = Info, D = Debug, E = Error, F = Fatal) |
-| _a | abbreviation                                         |
-| _d | date / time (msec since 1970)                        |
-| _i | filename                                             |
-| _l | line                                                 |
-| _m | message text                                         |
+```
+  | _f | facility                                             |
+  | _s | severity (I = Info, D = Debug, E = Error, F = Fatal) |
+  | _a | abbreviation                                         |
+  | _d | date / time (msec since 1970)                        |
+  | _i | filename                                             |
+  | _l | line                                                 |
+  | _m | message text                                         |
+```
 
 If you include a JSON object as the second parameter to the
 _log() call, it will copy members of that object to the logged
