@@ -29,7 +29,8 @@ virtually every programming language you are likely to use.
 So... as a developer, what you do is to create a message
 template like this:
 
-```var larb_messages = {
+```
+  var larb_messages = {
   facility: "larb",
   messages: {
     info: {
@@ -80,21 +81,24 @@ template like this:
       }
     }
   }
-}```
+```
 
 It is then read and parsed with the antlog function:
 
-```const antlog = require( "antlog" );
+```
+  const antlog = require( "antlog" );
 
-[ _log, _msg ] = antlog( larb_messages );
+  [ _log, _msg ] = antlog( larb_messages );
 
-_log( _msg.I_BEGIN, {name: "REST Access"} );
-_log( _msg.I_OPTIONS, {options: process.ARGV} );```
+  _log( _msg.I_BEGIN, {name: "REST Access"} );
+  _log( _msg.I_OPTIONS, {options: process.ARGV} );```
 
 Which would print log messages that look like:
 
-```{"_f":"LARB","_s":"I","_a":"BEGIN","_d":1654711842031,"_i":"access.js","_l":5,"_m":"Application beginning","name":"REST Access"}
-{"_f":"LARB","_s":"I","_a":"OPTIONS","_d":1654711842073,"_i":"access.js","_l":6,"_m":"Command line options","options":["/usr/bin/node","/opt/larb/access.js","--config","/mnt/r1/access_opts.json"]}```
+```
+{"_f":"LARB","_s":"I","_a":"BEGIN","_d":1654711842031,"_i":"access.js","_l":5,"_m":"Application beginning","name":"REST Access"}
+{"_f":"LARB","_s":"I","_a":"OPTIONS","_d":1654711842073,"_i":"access.js","_l":6,"_m":"Command line options","options":["/usr/bin/node","/opt/larb/access.js","--config","/mnt/r1/access_opts.json"]}
+```
 
 Each log entry will have the following "private" JSON members:
 
@@ -113,30 +117,34 @@ message.
 And if you printed these with console.log() in a lambda, you
 would get CloudWatch records that look like:
 
-```2022-06-08T18:10:42.031Z\t76227c3a-e758-11ec-9045-17b456a80bd2\tINFO\t{"_f":"LARB","_s":"I","_a":"BEGIN","_d":1654711842031,"_c":"access.js","_l":5,"_m":"Application beginning","name":"REST Access"}
-2022-06-08T18:10:42.073Z\t76227c3a-e758-11ec-9045-17b456a80bd2\tINFO\t{"_f":"LARB","_s":"I","_a":"OPTIONS","_d":1654711842073,"_c":"access.js","_l":6,"_m":"Command line options","options":["/usr/bin/node","/opt/larb/access.js","--config","/mnt/r1/access_opts.json"]}```
+```
+2022-06-08T18:10:42.031Z\t76227c3a-e758-11ec-9045-17b456a80bd2\tINFO\t{"_f":"LARB","_s":"I","_a":"BEGIN","_d":1654711842031,"_c":"access.js","_l":5,"_m":"Application beginning","name":"REST Access"}
+2022-06-08T18:10:42.073Z\t76227c3a-e758-11ec-9045-17b456a80bd2\tINFO\t{"_f":"LARB","_s":"I","_a":"OPTIONS","_d":1654711842073,"_c":"access.js","_l":6,"_m":"Command line options","options":["/usr/bin/node","/opt/larb/access.js","--config","/mnt/r1/access_opts.json"]}
+```
 
 And sure, that may not look all that great to you, but like I
 said, it's great if you're trying to parse CloudWatch logfilese
 because you can now use code like this to parse it:
 
-```function _log_line_to_components( line ) {
-  let components = line.split('\t');
+```
+  function _log_line_to_components( line ) {
+    let components = line.split('\t');
   
-  try {
-    // Parse the text of the log message so we return
-    // an object, not the JSON serialization of the object.
-    components[ 3 ] = JSON.parse( components[ 3 ] );
-  } catch( err ) {
-    // If we catch an exception, assume it's a problem
-    // parsing the JSON.
-    components[ 3 ] = {}
-  }
+    try {
+      // Parse the text of the log message so we return
+      // an object, not the JSON serialization of the object.
+      components[ 3 ] = JSON.parse( components[ 3 ] );
+    } catch( err ) {
+      // If we catch an exception, assume it's a problem
+      // parsing the JSON.
+      components[ 3 ] = {}
+    }
 
-  // This returns an array with the Date string, AWS
-  // invocation ID, log level and logged object
-  return components;
-}```
+    // This returns an array with the Date string, AWS
+    // invocation ID, log level and logged object
+    return components;
+  }
+```
 
 # Log Descriptor
 
